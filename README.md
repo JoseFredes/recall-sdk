@@ -56,18 +56,20 @@ you need to: `shield(store, { agentId, signer, keyRegistry, bus })`.
 ## Run the example
 
 A self-contained, offline, deterministic walkthrough (connect → legit write →
-poisoning → detect → trace → cascade → before/after) lives in the demo app:
+poisoning → detect → trace → cascade → before/after):
 
 ```bash
-node --import tsx apps/demo-server/examples/quickstart.ts
+npm install
+npm run example      # node --import tsx examples/quickstart.ts
 ```
 
-No network, no server, exits 0.
+No network, no server, no API key — exits 0.
 
 ## Tests
 
-From the package directory:
-
 ```bash
-npm -w @recall/sdk run test     # node --test --import tsx sdk.test.ts
+npm test            # node --test --import tsx src/sdk.test.ts  (26 tests, offline)
+npm run typecheck   # tsc --noEmit
 ```
+
+Requirements: **Node ≥ 20**. Zero runtime dependencies.

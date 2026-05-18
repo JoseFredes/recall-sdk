@@ -33,12 +33,14 @@
   "types": "./src/index.ts",
   "files": [
     "src",
+    "examples",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test --import tsx src/sdk.test.ts"
+    "test": "node --test --import tsx src/sdk.test.ts",
+    "example": "node --import tsx examples/quickstart.ts"
   },
   "devDependencies": {
     "@types/node": "^22",
