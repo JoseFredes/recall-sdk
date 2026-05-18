@@ -1,0 +1,48 @@
+{
+  "name": "@recall/sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A signed Memory BOM SDK: detect, trace to patient zero, and cascade-quarantine MINJA-style memory poisoning across an AI agent fleet.",
+  "keywords": [
+    "ai-security",
+    "agent-security",
+    "memory-poisoning",
+    "minja",
+    "owasp-asi06",
+    "provenance",
+    "llm",
+    "agents",
+    "mem0"
+  ],
+  "license": "MIT",
+  "author": "José Fredes",
+  "homepage": "https://github.com/JoseFredes/recall-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseFredes/recall-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoseFredes/recall-sdk/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --import tsx src/sdk.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsx": "^4",
+    "typescript": "^5"
+  }
+}
