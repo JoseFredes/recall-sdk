@@ -27,23 +27,30 @@
   "engines": {
     "node": ">=20"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "types": "./src/index.ts",
   "files": [
-    "src",
-    "examples",
+    "dist",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --test --import tsx src/sdk.test.ts",
-    "example": "node --import tsx examples/quickstart.ts"
+    "example": "node --import tsx examples/quickstart.ts",
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
     "@types/node": "^22",
+    "tsup": "^8",
     "tsx": "^4",
     "typescript": "^5"
   }
