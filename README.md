@@ -1,3 +1,8 @@
+[![CI](https://github.com/JoseFredes/recall-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/JoseFredes/recall-sdk/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/@recall/sdk.svg)](https://www.npmjs.com/package/@recall/sdk)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![Node](https://img.shields.io/badge/node-%E2%89%A520-brightgreen)](https://nodejs.org/)
+
 # Recall SDK
 
 A **signed Memory BOM** for agent fleets. Every memory an agent writes is an
@@ -9,6 +14,24 @@ That provenance is what lets Recall do the things crypto alone can't:
   query-only injection), by comparing it against the onboarding ground truth;
 - trace it back to **patient zero** (the originating record/session);
 - **cascade-quarantine** patient zero and everything derived from it.
+
+## Why this exists
+
+Signing alone does not stop memory-injection attacks like MINJA, AgentPoison,
+or MemoryGraft — a compromised agent can sign garbage just as validly as it
+signs truth. Crypto is commodity. The moat is the **fleet-scope custody
+graph**: signed provenance + cascade quarantine + (v0.3) drift detection
+against onboarding ground truth. Recall is the trust layer that sits over
+your vector store and turns "this memory is signed" into "this memory is
+credible, and here is the blast radius if it isn't."
+
+## Install
+
+```bash
+npm i @recall/sdk
+```
+
+Requirements: **Node ≥ 20**. ESM only. Zero runtime dependencies.
 
 ## Connect in 3 lines
 
@@ -72,4 +95,24 @@ npm test            # node --test --import tsx src/sdk.test.ts  (26 tests, offli
 npm run typecheck   # tsc --noEmit
 ```
 
-Requirements: **Node ≥ 20**. Zero runtime dependencies.
+## Non-goals (today)
+
+Recall does not, in this release, claim to:
+
+- stop a *signed* poisoned write from being accepted at write time (that is
+  exactly what MINJA exploits — detection is post-hoc, by drift against
+  ground truth);
+- ship cross-store adapters, KMS-backed signers, multi-tenant key registries,
+  or published benchmarks. Those are tracked as v0.3 work in `ROADMAP.md`.
+
+If you need a guarantee Recall doesn't make yet, please open an issue rather
+than assuming — honesty is the point.
+
+## Roadmap & versioning
+
+See [`ROADMAP.md`](./ROADMAP.md) for the task-by-task plan toward v0.2 (real
+build + CI + changelog) and v0.3 (benchmarks vs MINJA / AgentPoison /
+MemoryGraft, `THREAT_MODEL.md`, `SECURITY.md`).
+
+Versions follow [Semantic Versioning](https://semver.org). Releases will be
+tracked in `CHANGELOG.md` starting with v0.2.0 (coming in v0.2 — see ROADMAP).

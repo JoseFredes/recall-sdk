@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test (${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20.x', '22.x']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Example (offline walkthrough)
+        run: npm run example
+
+      - name: Pack-smoke
+        run: |
+          set -euo pipefail
+          npm pack
+          TARBALL="$(ls recall-sdk-*.tgz | head -n1)"
+          echo "Tarball: $TARBALL"
+          SMOKE_DIR="$(mktemp -d)"
+          cd "$SMOKE_DIR"
+          npm init -y >/dev/null
+          node -e "let p=require('./package.json');p.type='module';require('fs').writeFileSync('./package.json',JSON.stringify(p,null,2))"
+          npm i "$GITHUB_WORKSPACE/$TARBALL" >/dev/null
+          cat > smoke.mjs <<'EOF'
+          import { shield, InMemoryVectorStore } from "@recall/sdk";
+          const s = shield(new InMemoryVectorStore(), { agentId: "ci" });
+          if (typeof s.recall.verify !== "function") { console.error("FAIL"); process.exit(1); }
+          console.log("OK");
+          EOF
+          OUT="$(node smoke.mjs)"
+          [ "$OUT" = "OK" ] || { echo "Smoke failed: $OUT"; exit 1; }
+          echo "Pack-smoke passed"
