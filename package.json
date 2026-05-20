@@ -44,6 +44,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --test --import tsx src/sdk.test.ts",
     "example": "node --import tsx examples/quickstart.ts",
+    "bench": "node --import tsx bench/index.ts",
     "build": "tsup",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run build && npm test"
