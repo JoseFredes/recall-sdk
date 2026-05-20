@@ -1,6 +1,6 @@
 {
   "name": "@recall/sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "A signed Memory BOM SDK: detect, trace to patient zero, and cascade-quarantine MINJA-style memory poisoning across an AI agent fleet.",
   "keywords": [
